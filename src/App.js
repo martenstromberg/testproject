@@ -1,29 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component} from 'react';
+import List from './List.js'
 import './App.css';
 
+export default class App extends Component  {
+  constructor(props) {
+    super(props)
+    this.state = {
+      term: '',
+      participants: []
+    }
+  }
 
+  addParticipant = (event) => {
+    console.log("added participant")
+    event.preventDefault()
+    this.setState({
+      term:'',
+      participants:[...this.state.participants, this.state.term]
+    })
+  }
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-      <h2>Updated master</h2>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  onChange = (event) => {
+    this.setState({
+      term:event.target.value
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>nästatorsdagsmiddag.com</h1>
+        <form className="App" onSubmit={this.addParticipant}>
+          <input placeholder="Participant" value={this.state.term} onChange={this.onChange}/>
+          <button type="submit"> Add participant</button>
+        </form>
+        <List items={this.state.participants} />
+      </div>
+    )
+  }
 }
-
-export default App;
