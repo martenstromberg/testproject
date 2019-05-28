@@ -55,8 +55,8 @@ export default class App extends Component  {
   render() {
     return (
       <div>
-        <h1>nästatorsdagsmiddag.com</h1>
-        <form className="App" onSubmit={this.addParticipant}>
+        <h2>nästatorsdagsmiddag.com</h2>
+        <form onSubmit={this.addParticipant}>
           <input placeholder="Participant" value={this.state.term} onChange={this.onChange}/>
           <button type="submit"> Add participant</button>
         </form>
