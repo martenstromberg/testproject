@@ -26,7 +26,8 @@ export default class App extends Component  {
   }
 
     componentDidMount() {
-      amplitude.init('fedce47e3adeadc6438619b2d60c9f92');
+      const API_KEY=process.env.AMPLITUDE_KEY
+      amplitude.init(API_KEY);
       const eventName = "pageLoaded"
       sendEventToAmplitude(eventName)
     }
