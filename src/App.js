@@ -1,6 +1,7 @@
 import React, { Component} from 'react';
 import List from './List.js'
 import './App.css';
+import amplitude from 'amplitude-js/amplitude';
 
 function  getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -8,21 +9,12 @@ function  getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-async function getData() {
-  const response = await fetch("https://randomuser.me/api/?results=5")
-  const result = await response.json()
-  const fullName = result.results.map(result =>  result.name.first + " " + result.name.last)
-  fullName.map(names => console.log(names))
-
-  this.setState({
-    participantsApi: fullName
-  })
-
-
+function sendEventToAmplitude(eventName) {
+  amplitude.getInstance().logEvent(eventName);
+  console.log('event ['+eventName+'] sent to Amplitude')
 }
+
 export default class App extends Component  {
-
-
   constructor(props) {
     super(props)
     this.state = {
@@ -33,27 +25,17 @@ export default class App extends Component  {
     }
   }
 
-
-
-   getData = async (event) => {
-    const response = await fetch("https://randomuser.me/api/?results=5")
-    const result = await response.json()
-    const fullName = result.results.map(result =>  result.name.first + " " + result.name.last)
-    fullName.map(names => console.log(names))
-
-    this.setState({
-      participantsApi: fullName
-    })
-  }
-
     componentDidMount() {
-
-      this.getData()
-
+      const API_KEY=process.env.REACT_APP_AMPLITUDE_API_KEY
+      amplitude.init(API_KEY);
+      const eventName = "pageLoaded"
+      sendEventToAmplitude(eventName)
     }
 
   addParticipant = (event) => {
-    console.log("added participant")
+    const eventName = 'addParticipant'
+    sendEventToAmplitude(eventName)
+
     event.preventDefault()
     this.setState({
       term:'',
@@ -68,6 +50,9 @@ export default class App extends Component  {
   }
 
   selectOrganizer = () => {
+    const eventName = 'organizationSelected'
+    sendEventToAmplitude(eventName)
+
     const min  = 0
     var selectedOrganizer = ''
 
