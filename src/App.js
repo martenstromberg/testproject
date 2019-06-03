@@ -8,15 +8,49 @@ function  getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+async function getData() {
+  const response = await fetch("https://randomuser.me/api/?results=5")
+  const result = await response.json()
+  const fullName = result.results.map(result =>  result.name.first + " " + result.name.last)
+  fullName.map(names => console.log(names))
+
+  this.setState({
+    participantsApi: fullName
+  })
+
+
+}
 export default class App extends Component  {
+
+
   constructor(props) {
     super(props)
     this.state = {
       term: '',
       participants: [],
-      organizer: ''
+      organizer: '',
+      participantsApi:[]
     }
   }
+
+
+
+   getData = async (event) => {
+    const response = await fetch("https://randomuser.me/api/?results=5")
+    const result = await response.json()
+    const fullName = result.results.map(result =>  result.name.first + " " + result.name.last)
+    fullName.map(names => console.log(names))
+
+    this.setState({
+      participantsApi: fullName
+    })
+  }
+
+    componentDidMount() {
+
+      this.getData()
+
+    }
 
   addParticipant = (event) => {
     console.log("added participant")
@@ -66,6 +100,7 @@ export default class App extends Component  {
         <ul>
           <li>{this.state.organizer}</li>
         </ul>
+        <List items={this.state.participantsApi} />
       </div>
     )
   }
