@@ -5,6 +5,7 @@
   "dependencies": {
     "amplitude": "^3.5.0",
     "amplitude-js": "^5.2.2",
+    "npm": "^6.9.0",
     "react": "^16.8.6",
     "react-amplitude": "^0.1.7",
     "react-dom": "^16.8.6",
