@@ -9,7 +9,9 @@ function  getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const API_KEY=process.env.AMPLITUDE_KEY
+const API_KEY=process.env.REACT_APP_AMPLITUDE_API_KEY
+
+
 
 
 function sendEventToAmplitude(eventName) {
@@ -18,7 +20,9 @@ function sendEventToAmplitude(eventName) {
 }
 
 export default class App extends Component  {
+
   constructor(props) {
+
     super(props)
     this.state = {
       term: '',
@@ -29,7 +33,7 @@ export default class App extends Component  {
   }
 
     componentDidMount() {
-      const API_KEY=process.env.AMPLITUDE_KEY
+      // const API_KEY=process.env.REACT_APP_AMPLITUDE_API_KEY
       amplitude.init(API_KEY);
       const eventName = "pageLoaded"
       sendEventToAmplitude(eventName)
