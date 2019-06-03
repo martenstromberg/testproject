@@ -9,6 +9,9 @@ function  getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+const API_KEY=process.env.AMPLITUDE_KEY
+
+
 function sendEventToAmplitude(eventName) {
   amplitude.getInstance().logEvent(eventName);
   console.log('event ['+eventName+'] sent to Amplitude')
