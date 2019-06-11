@@ -25,7 +25,7 @@ export default class App extends Component  {
 
     super(props)
     this.state = {
-      term: '',
+      name: '',
       participants: [],
       organizer: '',
       participantsApi:[]
@@ -45,14 +45,15 @@ export default class App extends Component  {
 
     event.preventDefault()
     this.setState({
-      term:'',
-      participants:[...this.state.participants, this.state.term]
+      name:'',
+      participants:[...this.state.participants, this.state.name]
     })
   }
 
   onChange = (event) => {
+    console.log(event.target.value)
     this.setState({
-      term:event.target.value
+      name:event.target.value
     })
   }
 
@@ -83,7 +84,7 @@ export default class App extends Component  {
       <div>
         <h2>nästatorsdagsmiddag.com</h2>
         <form onSubmit={this.addParticipant}>
-          <input placeholder="Participant" value={this.state.term} onChange={this.onChange}/>
+          <input placeholder="Participant" value={this.state.name} onChange={this.onChange}/>
           <button type="submit"> Add participant</button>
         </form>
         <List items={this.state.participants} />
