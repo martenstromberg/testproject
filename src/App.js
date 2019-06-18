@@ -26,9 +26,10 @@ export default class App extends Component  {
     super(props)
     this.state = {
       name: '',
+      password:'',
       participants: [],
       organizer: '',
-      participantsApi:[]
+      currentOrganizer:[],
     }
   }
 
@@ -38,6 +39,14 @@ export default class App extends Component  {
       const eventName = "pageLoaded"
       sendEventToAmplitude(eventName)
     }
+
+  currentOrganizer = () => {
+    fetch("http://localhost:8080/api.json/login?password=" + this.state.password)
+    .then(res => res.json())
+    .then(res => this.setState({ currentOrganizer: res }))
+    .catch(err => console.log(err));
+    console.log(this.state.currentOrganizer)
+  }
 
   addParticipant = (event) => {
     const eventName = 'addParticipant'
@@ -54,6 +63,13 @@ export default class App extends Component  {
     console.log(event.target.value)
     this.setState({
       name:event.target.value
+    })
+  }
+
+  onChangePassword = (event) => {
+    console.log(event.target.value)
+    this.setState({
+      password:event.target.value
     })
   }
 
@@ -77,12 +93,35 @@ export default class App extends Component  {
         organizer:selectedOrganizer
       }
     )
+    console.log("selected organizer is " + this.state.organizer)
   }
+
+  confirmNewOrganizer = () => {
+    const array = this.state.organizer.replace(" ", "+")
+    console.log("confirming new organizer...")
+    fetch("http://localhost:8080/api.json/new_organiser?organiser="+ array+"&password="+this.state.password)
+    .catch(err => console.log(err))
+
+  }
+
+
 
   render() {
     return (
       <div>
-        <h2>nästatorsdagsmiddag.com</h2>
+        <h1>nästatorsdagsmiddag.com</h1>
+          <input placeholder="Password to interact with database" value={this.state.password} onChange={this.onChangePassword}/>
+        <h2>Den som ordnar kommande middag är</h2>
+        <button type="submit" onClick={this.currentOrganizer}> Se vem som ordnar nuvarande torsdagsmiddag</button>
+        {this.state.currentOrganizer.map((item, i) => {
+            return (
+              <div key={i}>
+                <ul>
+                  <li>{item.name},  Utsedd att organisera: {item.timestamp_selected}</li>
+                </ul>
+              </div>)
+        })}
+        <h2>Val av nästa organisatör - potentiella organisatörer</h2>
         <form onSubmit={this.addParticipant}>
           <input placeholder="Participant" value={this.state.name} onChange={this.onChange}/>
           <button type="submit"> Add participant</button>
@@ -93,7 +132,7 @@ export default class App extends Component  {
         <ul>
           <li>{this.state.organizer}</li>
         </ul>
-        <List items={this.state.participantsApi} />
+        <button type="submit" onClick={this.confirmNewOrganizer}> Confirm new organizer</button>
       </div>
     )
   }
