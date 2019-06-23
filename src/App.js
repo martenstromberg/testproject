@@ -44,7 +44,7 @@ export default class App extends Component  {
     }
 
   currentOrganizer = () => {
-    fetch("http://" + config.API_DB +"/api.json/login?password=" + this.state.password)
+    fetch("https://" + config.API_DB +"/api.json/login?password=" + this.state.password)
     .then(res => res.json())
     .then(res => this.setState({ currentOrganizer: res }))
     .catch(err => console.log(err));
@@ -102,7 +102,7 @@ export default class App extends Component  {
   confirmNewOrganizer = () => {
     const array = this.state.organizer.replace(" ", "+")
     console.log("confirming new organizer...")
-    fetch("http://" + config.API_DB +"/api.json/new_organiser?organiser="+ array+"&password="+this.state.password)
+    fetch("https://" + config.API_DB +"/api.json/new_organiser?organiser="+ array+"&password="+this.state.password)
     .catch(err => console.log(err))
 
   }
