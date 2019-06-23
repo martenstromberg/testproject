@@ -2,6 +2,8 @@ import React, { Component} from 'react';
 import List from './List.js'
 import './App.css';
 import amplitude from 'amplitude-js/amplitude';
+// var dotenv = require("dotenv").config();
+
 
 function  getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -10,9 +12,10 @@ function  getRandomInt(min, max) {
 }
 
 const API_KEY=process.env.REACT_APP_AMPLITUDE_API_KEY
+const config = {
+    API_DB: process.env.REACT_APP_API_DB
 
-
-
+  }
 
 function sendEventToAmplitude(eventName) {
   amplitude.getInstance().logEvent(eventName);
@@ -41,7 +44,7 @@ export default class App extends Component  {
     }
 
   currentOrganizer = () => {
-    fetch("http://localhost:8080/api.json/login?password=" + this.state.password)
+    fetch("http://" + config.API_DB +"/api.json/login?password=" + this.state.password)
     .then(res => res.json())
     .then(res => this.setState({ currentOrganizer: res }))
     .catch(err => console.log(err));
@@ -99,12 +102,10 @@ export default class App extends Component  {
   confirmNewOrganizer = () => {
     const array = this.state.organizer.replace(" ", "+")
     console.log("confirming new organizer...")
-    fetch("http://localhost:8080/api.json/new_organiser?organiser="+ array+"&password="+this.state.password)
+    fetch("http://" + config.API_DB +"/api.json/new_organiser?organiser="+ array+"&password="+this.state.password)
     .catch(err => console.log(err))
 
   }
-
-
 
   render() {
     return (
