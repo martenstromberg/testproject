@@ -1,60 +1,44 @@
 import React, { Component} from 'react';
 import List from './List.js'
 import './App.css';
+import randomInt from './RandomInt.js'
+import sendEventToAmplitude from './Amplitude.js'
 import amplitude from 'amplitude-js/amplitude';
-// var dotenv = require("dotenv").config();
 
 
-function  getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-const API_KEY=process.env.REACT_APP_AMPLITUDE_API_KEY
 const config = {
-    API_DB: process.env.REACT_APP_API_DB
-
+    API_DB: process.env.REACT_APP_API_DB,
+    AMPLITUDE_API_KEY: process.env.REACT_APP_AMPLITUDE_API_KEY
   }
-
-function sendEventToAmplitude(eventName) {
-  amplitude.getInstance().logEvent(eventName);
-  console.log('event ['+eventName+'] sent to Amplitude')
-}
 
 export default class App extends Component  {
-
-  constructor(props) {
-
-    super(props)
-    this.state = {
-      name: '',
-      password:'',
-      participants: [],
-      organizer: '',
-      currentOrganizer:[],
+    constructor(props) {
+      super(props)
+      this.state = {
+        name: '',
+        password:'',
+        participants: [],
+        organizer: '',
+        currentOrganizer:[],
+      }
     }
-  }
 
     componentDidMount() {
-      // const API_KEY=process.env.REACT_APP_AMPLITUDE_API_KEY
-      amplitude.init(API_KEY);
+      amplitude.init(config.AMPLITUDE_API_KEY);
       const eventName = "pageLoaded"
       sendEventToAmplitude(eventName)
     }
 
   currentOrganizer = () => {
-    fetch("http://" + config.API_DB +"/api.json/login?password=" + this.state.password)
-    .then(res => res.json())
-    .then(res => this.setState({ currentOrganizer: res }))
-    .catch(err => console.log(err));
-    console.log(this.state.currentOrganizer)
+    fetch("https://" + config.API_DB +"/api.json/login?password=" + this.state.password)
+      .then(res => res.json())
+      .then(res => this.setState({ currentOrganizer: res }))
+      .catch(err => console.log(err));
   }
 
   addParticipant = (event) => {
     const eventName = 'addParticipant'
     sendEventToAmplitude(eventName)
-
     event.preventDefault()
     this.setState({
       name:'',
@@ -62,17 +46,9 @@ export default class App extends Component  {
     })
   }
 
-  onChange = (event) => {
-    console.log(event.target.value)
+  onChange = (event, field) => {
     this.setState({
-      name:event.target.value
-    })
-  }
-
-  onChangePassword = (event) => {
-    console.log(event.target.value)
-    this.setState({
-      password:event.target.value
+      [field]:event.target.value
     })
   }
 
@@ -86,7 +62,7 @@ export default class App extends Component  {
     if (this.state.participants.length > 0) {
       const max = this.state.participants.length - 1
       console.log("max value is " + max)
-      const selectedId = getRandomInt(min, max)
+      const selectedId = randomInt(min, max)
       selectedOrganizer = this.state.participants[selectedId]
     } else {
       selectedOrganizer= "None, you need to add participants first"
@@ -102,7 +78,7 @@ export default class App extends Component  {
   confirmNewOrganizer = () => {
     const array = this.state.organizer.replace(" ", "+")
     console.log("confirming new organizer...")
-    fetch("http://" + config.API_DB +"/api.json/new_organiser?organiser="+ array+"&password="+this.state.password)
+    fetch("https://" + config.API_DB +"/api.json/new_organiser?organiser="+ array+"&password="+this.state.password)
     .catch(err => console.log(err))
 
   }
@@ -111,7 +87,7 @@ export default class App extends Component  {
     return (
       <div>
         <h1>nästatorsdagsmiddag.com</h1>
-          <input placeholder="Password to interact with database" value={this.state.password} onChange={this.onChangePassword}/>
+          <input placeholder="Password to interact with database" value={this.state.password} onChange={(event) => this.onChange(event, "password")}/>
         <h2>Den som ordnar kommande middag är</h2>
         <button type="submit" onClick={this.currentOrganizer}> Se vem som ordnar nuvarande torsdagsmiddag</button>
         {this.state.currentOrganizer.map((item, i) => {
@@ -124,7 +100,7 @@ export default class App extends Component  {
         })}
         <h2>Val av nästa organisatör - potentiella organisatörer</h2>
         <form onSubmit={this.addParticipant}>
-          <input placeholder="Participant" value={this.state.name} onChange={this.onChange}/>
+          <input placeholder="Participant" value={this.state.name} onChange={(event) => this.onChange(event, "name")}/>
           <button type="submit"> Add participant</button>
         </form>
         <List items={this.state.participants} />
