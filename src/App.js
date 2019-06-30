@@ -4,7 +4,7 @@ import './App.css';
 import randomInt from './RandomInt.js'
 import sendEventToAmplitude from './Amplitude.js'
 import amplitude from 'amplitude-js/amplitude';
-
+import ValidDateFormat from './DateValidator'
 
 const config = {
     API_DB: process.env.REACT_APP_API_DB,
@@ -20,6 +20,7 @@ export default class App extends Component  {
         participants: [],
         organizer: '',
         currentOrganizer:[],
+        nextEventDate: ''
       }
     }
 
@@ -30,7 +31,7 @@ export default class App extends Component  {
     }
 
   currentOrganizer = () => {
-    fetch("https://" + config.API_DB +"/api.json/login?password=" + this.state.password)
+    fetch("http://" + config.API_DB +"/api.json/login?password=" + this.state.password)
       .then(res => res.json())
       .then(res => this.setState({ currentOrganizer: res }))
       .catch(err => console.log(err));
@@ -76,11 +77,24 @@ export default class App extends Component  {
   }
 
   confirmNewOrganizer = () => {
-    const array = this.state.organizer.replace(" ", "+")
-    console.log("confirming new organizer...")
-    fetch("https://" + config.API_DB +"/api.json/new_organiser?organiser="+ array+"&password="+this.state.password)
-    .catch(err => console.log(err))
 
+    if(ValidDateFormat(this.state.nextEventDate)) {
+        const array = this.state.organizer.replace(" ", "+")
+        console.log("confirming new organizer...")
+        fetch("http://" + config.API_DB +"/api.json/new_organiser?organiser="+ array+"&password="+this.state.password + "&nextdate="+this.state.nextEventDate)
+        .catch(err => console.log(err))
+    } else {
+        alert("please make sure date of next in correct format")
+    }
+  }
+
+  extractDate = (timestamp) => {
+      const dateItem = new Date(timestamp)
+      if (dateItem.getMonth()<10) {
+          return dateItem.getFullYear() + "-0" + dateItem.getMonth() + "-" + dateItem.getDate()
+      } else {
+          return dateItem.getFullYear() + "-" + dateItem.getMonth() + "-" + dateItem.getDate()
+      }
   }
 
   render() {
@@ -91,10 +105,12 @@ export default class App extends Component  {
         <h2>Den som ordnar kommande middag är</h2>
         <button type="submit" onClick={this.currentOrganizer}> Se vem som ordnar nuvarande torsdagsmiddag</button>
         {this.state.currentOrganizer.map((item, i) => {
+            const nextDinnerDate = this.extractDate(item.date_of_next_dinner)
+            const timestampSelectedDate = this.extractDate(item.timestamp_selected)
             return (
               <div key={i}>
                 <ul>
-                  <li>{item.name},  Utsedd att organisera: {item.timestamp_selected}</li>
+                  <li>{item.name} ordnar nästa middag den: {nextDinnerDate},  Utsedd att organisera: {timestampSelectedDate}</li>
                 </ul>
               </div>)
         })}
@@ -109,6 +125,10 @@ export default class App extends Component  {
         <ul>
           <li>{this.state.organizer}</li>
         </ul>
+        <form>
+            <h3>Datum för nästa middag</h3>
+            <input placeholder="yyyy-mm-dd" value={this.state.nextEventDate} onChange={(event) => this.onChange(event, "nextEventDate")}/>
+        </form>
         <button type="submit" onClick={this.confirmNewOrganizer}> Confirm new organizer</button>
       </div>
     )
