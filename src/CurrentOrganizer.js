@@ -14,7 +14,9 @@ export default class CurrentOrganizer extends Component{
     currentOrganizer = () => {
         console.log(this.state.config)
         console.log("current password from child" + this.props.password)
-      fetch("http://" + this.state.config.API_DB +"/api.json/login?password=" + this.props.password)
+        let requestType = (this.state.config.ENVIRONMENT === "local") ? "http" : "https"
+        let request = requestType + "://" + this.state.config.API_DB +"/api.json/login?password=" + this.props.password
+      fetch(request)
         .then(res => res.json())
         .then(res => this.setState({ currentOrganizer: res }))
         .catch(err => console.log(err));

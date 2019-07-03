@@ -8,7 +8,8 @@ import NewOrganizer from './NewOrganizer'
 
 const config = {
     API_DB: process.env.REACT_APP_API_DB,
-    AMPLITUDE_API_KEY: process.env.REACT_APP_AMPLITUDE_API_KEY
+    AMPLITUDE_API_KEY: process.env.REACT_APP_AMPLITUDE_API_KEY,
+    ENVIRONMENT: process.env.REACT_APP_ENVIRONMENT
   }
 
 export default class App extends Component  {
@@ -26,48 +27,49 @@ export default class App extends Component  {
     }
 
     componentDidMount() {
-      amplitude.init(config.AMPLITUDE_API_KEY);
-      const eventName = "pageLoaded"
-      sendEventToAmplitude(eventName)
+        amplitude.init(config.AMPLITUDE_API_KEY);
+        const eventName = "pageLoaded"
+        sendEventToAmplitude(eventName)
     }
 
     confirmNewOrganizer = () => {
-      console.log("new organizer is " + this.state.organizer)
-    if(ValidDateFormat(this.state.nextEventDate)) {
-        const array = this.state.organizer.replace(" ", "+")
-        console.log("confirming new organizer...")
-        fetch("http://" + config.API_DB +"/api.json/new_organiser?organiser="+ array+"&password="+this.state.password + "&nextdate="+this.state.nextEventDate)
-        .catch(err => console.log(err))
-    } else {
-        alert("please make sure date of next in correct format")
-    }
+        if(ValidDateFormat(this.state.nextEventDate)) {
+            console.log(config.ENVIRONMENT)
+            const array = this.state.organizer.replace(" ", "+")
+            let requestType = (config.ENVIRONMENT === "local") ? "http" : "https"
+            let request = requestType + "://" + config.API_DB +"/api.json/new_organiser?organiser="+ array+"&password="+this.state.password + "&nextdate="+this.state.nextEventDate
+            console.log("request is " + request)
+            fetch(request)
+            .catch(err => console.log(err))
+        } else {
+            alert("please make sure date of next Event is in correct format")
+        }
     }
 
     handleNewOrganizer = (newOrganizer) => {
-        console.log("Handling new organizer from App" + newOrganizer)
-      this.setState({organizer:newOrganizer})
+        this.setState({organizer:newOrganizer})
     }
 
     onChange = (event, field) => {
-    this.setState({
-      [field]:event.target.value
-    })
+        this.setState({
+          [field]:event.target.value
+        })
     }
 
     render() {
-    return (
-      <div>
-        <h1>nästatorsdagsmiddag.com</h1>
-          <input placeholder="Password to interact with database" value={this.state.password} onChange={(event) => this.onChange(event, "password")}/>
-        <h2>Den som ordnar kommande middag är</h2>
-        <CurrentOrganizer config={config} password={this.state.password}/>
-        <NewOrganizer config={config} onHandleNewOrganizer={this.handleNewOrganizer}/>
-        <form>
-            <h3>Datum för nästa middag</h3>
-            <input placeholder="yyyy-mm-dd" value={this.state.nextEventDate} onChange={(event) => this.onChange(event, "nextEventDate")}/>
-        </form>
-        <button type="submit" onClick={this.confirmNewOrganizer}> Confirm new organizer</button>
-      </div>
+        return (
+          <div>
+            <h1>nästatorsdagsmiddag.com</h1>
+              <input placeholder="Password to interact with database" value={this.state.password} onChange={(event) => this.onChange(event, "password")}/>
+            <h2>Den som ordnar kommande middag är</h2>
+            <CurrentOrganizer config={config} password={this.state.password}/>
+            <NewOrganizer config={config} onHandleNewOrganizer={this.handleNewOrganizer}/>
+            <form>
+                <h3>Datum för nästa middag</h3>
+                <input placeholder="yyyy-mm-dd" value={this.state.nextEventDate} onChange={(event) => this.onChange(event, "nextEventDate")}/>
+            </form>
+            <button type="submit" onClick={this.confirmNewOrganizer}> Confirm new organizer</button>
+          </div>
     )
     }
 }
