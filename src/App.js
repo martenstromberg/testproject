@@ -5,6 +5,7 @@ import amplitude from 'amplitude-js/amplitude';
 import ValidDateFormat from './DateValidator'
 import CurrentOrganizer from './CurrentOrganizer'
 import NewOrganizer from './NewOrganizer'
+import CountDownClock from './CountDownClock'
 
 const config = {
     API_DB: process.env.REACT_APP_API_DB,
@@ -49,6 +50,8 @@ export default class App extends Component  {
     handleNewOrganizer = (newOrganizer) => {
         this.setState({organizer:newOrganizer})
     }
+
+
 
     onChange = (event, field) => {
         this.setState({
