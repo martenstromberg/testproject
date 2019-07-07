@@ -2,7 +2,7 @@ import React, { Component} from 'react';
 import './App.css';
 import sendEventToAmplitude from './Amplitude.js'
 import amplitude from 'amplitude-js/amplitude';
-import ValidDateFormat from './DateValidator'
+import {ValidDateFormat, ValidDate} from './DateValidator'
 import CurrentOrganizer from './CurrentOrganizer'
 import NewOrganizer from './NewOrganizer'
 import CountDownClock from './CountDownClock'
@@ -35,13 +35,17 @@ export default class App extends Component  {
 
     confirmNewOrganizer = () => {
         if(ValidDateFormat(this.state.nextEventDate)) {
-            console.log(config.ENVIRONMENT)
-            const array = this.state.organizer.replace(" ", "+")
-            let requestType = (config.ENVIRONMENT === "local") ? "http" : "https"
-            let request = requestType + "://" + config.API_DB +"/api.json/new_organiser?organiser="+ array+"&password="+this.state.password + "&nextdate="+this.state.nextEventDate
-            console.log("request is " + request)
-            fetch(request)
-            .catch(err => console.log(err))
+            if(ValidDate(this.state.nextEventDate)) {
+                console.log(config.ENVIRONMENT)
+                const array = this.state.organizer.replace(" ", "+")
+                let requestType = (config.ENVIRONMENT === "local") ? "http" : "https"
+                let request = requestType + "://" + config.API_DB +"/api.json/new_organiser?organiser="+ array+"&password="+this.state.password + "&nextdate="+this.state.nextEventDate
+                console.log("request is " + request)
+                fetch(request)
+                .catch(err => console.log(err))
+            } else {
+                alert("Please make sure selected date does not occur in the past")
+            }
         } else {
             alert("please make sure date of next Event is in correct format")
         }
@@ -52,11 +56,12 @@ export default class App extends Component  {
     }
 
 
-
     onChange = (event, field) => {
+
         this.setState({
           [field]:event.target.value
         })
+        console.log(this.state.nextEventDate)
     }
 
     render() {
