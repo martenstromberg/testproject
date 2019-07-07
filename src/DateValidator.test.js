@@ -21,6 +21,6 @@ it('does not accept old date', () => {
 })
 
 it('does accept future date', () => {
-    let input = '2020-01-01'
+    let input = '2019-12-21'
     expect(ValidDate(input)).toEqual(true)
 })

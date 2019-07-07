@@ -12,13 +12,18 @@ export default class CurrentOrganizer extends Component{
         }
     }
 
+    handlError = (err) => {
+        alert("Please make sure you have input a password and that it is correct")
+        console.log(err)
+    }
+
     currentOrganizer = () => {
         let requestType = (this.state.config.ENVIRONMENT === "local") ? "http" : "https"
         let request = requestType + "://" + this.state.config.API_DB +"/api.json/login?password=" + this.props.password
         fetch(request)
         .then(res => res.json())
         .then(res => this.setState({ currentOrganizer: res }))
-        .catch(err => console.log(err));
+        .catch(err => this.handlError(err));
     }
 
     extractDate = (timestamp) => {

@@ -3,11 +3,8 @@ import List from './List.js'
 import randomInt from './RandomInt.js'
 import sendEventToAmplitude from './Amplitude.js'
 
-
 export default class NewOrganizer extends Component {
-
     constructor(props) {
-
         super(props)
 
         this.state = {
@@ -15,9 +12,7 @@ export default class NewOrganizer extends Component {
             name:'',
             organizer:'',
             config: this.props.config,
-
         }
-
     }
 
     componentDidUpdate = () => {
@@ -73,13 +68,10 @@ export default class NewOrganizer extends Component {
       return selectedOrganizer
     }
 
-    newEvent = () => {
+    newOrganizer = () => {
         let newOrganizer = this.selectOrganizer()
         this.handleNewOrganizer(newOrganizer)
-
     }
-
-
 
     render() {
         return <div>
@@ -89,7 +81,7 @@ export default class NewOrganizer extends Component {
                   <button type="submit" onClick={this.addParticipant}> Add participant</button>
                 </form>
                 <List items={this.state.participants} />
-                <button type="submit" onClick={this.newEvent}> Select organizer</button>
+                <button type="submit" onClick={this.newOrganizer}> Select new organizer</button>
                 <h3>Den som organiserar nästa torsdagsmiddag är:</h3>
                 <ul>
                   <li>{this.state.organizer}</li>
