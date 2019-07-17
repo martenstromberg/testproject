@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.0.2",
     "amplitude": "^3.5.0",
     "amplitude-js": "^5.2.2",
     "custom-env": "^1.0.2",
