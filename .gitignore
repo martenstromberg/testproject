@@ -25,3 +25,4 @@ yarn-error.log*
 
 #Secrets
 .env
+auth_config.json
