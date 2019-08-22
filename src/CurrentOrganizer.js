@@ -2,6 +2,7 @@ import React, { Component} from 'react';
 import CountDownClock from './CountDownClock'
 
 
+
 export default class CurrentOrganizer extends Component{
     constructor (props) {
         super(props)
@@ -12,6 +13,11 @@ export default class CurrentOrganizer extends Component{
         }
     }
 
+    componentDidMount() {
+
+        this.currentOrganizer()
+    }
+
     handlError = (err) => {
         alert("Please make sure you have input a password and that it is correct")
         console.log(err)
@@ -19,7 +25,7 @@ export default class CurrentOrganizer extends Component{
 
     currentOrganizer = () => {
         let requestType = (this.state.config.ENVIRONMENT === "local") ? "http" : "https"
-        let request = requestType + "://" + this.state.config.API_DB +"/api.json/login?password=" + this.props.password
+        let request = requestType + "://" + this.state.config.API_DB +"/api.json/login?password=hello"
         fetch(request)
         .then(res => res.json())
         .then(res => this.setState({ currentOrganizer: res }))
@@ -48,14 +54,13 @@ export default class CurrentOrganizer extends Component{
     render() {
         return(
             <div>
-            <button type="submit" onClick={this.currentOrganizer}> Se vem som ordnar nuvarande torsdagsmiddag</button>
             {this.state.currentOrganizer.map((item, i) => {
                 const nextDinnerDate = this.extractDate(item.date_of_next_dinner)
                 const timestampSelectedDate = this.extractDate(item.timestamp_selected)
                 return (
-                  <div key={i}>
+                  <div>
                     <ul>
-                      <li>{item.name} ordnar nästa middag den: {nextDinnerDate},  Utsedd att organisera: {timestampSelectedDate}</li>
+                      <li>{item.name}  -  Den: {nextDinnerDate},  Utsedd att organisera: {timestampSelectedDate}</li>
                     </ul>
                   </div>)
               })}

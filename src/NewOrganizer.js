@@ -75,14 +75,15 @@ export default class NewOrganizer extends Component {
 
     render() {
         return <div>
-                <h2>Val av nästa organisatör - potentiella organisatörer</h2>
+                <h2>Val av ny organisatör </h2>
+                <h3>potentiella organisatörer</h3>
                 <form onSubmit={this.addParticipant}>
                   <input placeholder="Participant" value={this.state.name} onChange={(event) => this.onChange(event, "name")}/>
                   <button type="submit" onClick={this.addParticipant}> Add participant</button>
                 </form>
                 <List items={this.state.participants} />
                 <button type="submit" onClick={this.newOrganizer}> Select new organizer</button>
-                <h3>Den som organiserar nästa torsdagsmiddag är:</h3>
+                <h3>Utvald att organisera:</h3>
                 <ul>
                   <li>{this.state.organizer}</li>
                 </ul>

@@ -15,13 +15,10 @@ export default class CountDownClock extends Component {
     }
 
     secondsToEvent = () => {
-        console.log(this.state.nextEvent)
         let dateOfEvent = new Date(this.props.nextEvent)
-        console.log("date of event:" + dateOfEvent)
         let now = new Date()
         let difference = dateOfEvent.getTime() - now.getTime()
         let secondsDifference = Math.floor(difference/1000)
-        console.log("secondsDifference: " + secondsDifference)
         return secondsDifference
     }
 
@@ -42,7 +39,7 @@ export default class CountDownClock extends Component {
     timeItems = (input) => {
         var remaining = input
         let days = Math.floor(remaining/(60*60*24))
-        var remaining = remaining - (days * 60 * 60 * 24)
+        remaining = remaining - (days * 60 * 60 * 24)
         let hours = Math.floor(remaining/(60*60))
         remaining = remaining - (hours * 60 *60)
         let minutes = Math.floor(remaining/60)
@@ -58,7 +55,9 @@ export default class CountDownClock extends Component {
     render() {
 
         return <div>
-            <h2>{this.state.clockUnits.days} dagar {this.state.clockUnits.hours} timmar, {this.state.clockUnits.minutes} minuter, {this.state.clockUnits.seconds} sekunder till nästa torsdagsmiddag</h2>
+            <ul>
+                <li>{this.state.clockUnits.days} dagar {this.state.clockUnits.hours} timmar, {this.state.clockUnits.minutes} minuter, {this.state.clockUnits.seconds} sekunder till nästa torsdagsmiddag</li>
+            </ul>
         </div>
     }
 }
