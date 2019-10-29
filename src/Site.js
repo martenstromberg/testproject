@@ -75,8 +75,8 @@ export default class Site extends Component  {
         }
         return (
           <div>
-            <div style={{backgroundColor:"black"}}>
-                <h1 style={{color:"white"}}>nästatorsdagsmiddag.com</h1>
+            <div className=" bg-white shadow-md rounded px-8 py-8 pt-8">
+                <h1 style={{color:"black"}}>nästatorsdagsmiddag.com</h1>
             </div>
             <h2>Den som ordnar kommande middag är:</h2>
             <CurrentOrganizer config={config} password={this.state.password}/>

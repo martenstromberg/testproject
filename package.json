@@ -6,9 +6,11 @@
     "@auth0/auth0-spa-js": "^1.0.2",
     "amplitude": "^3.5.0",
     "amplitude-js": "^5.2.2",
+    "autoprefixer": "^9.7.0",
     "custom-env": "^1.0.2",
     "dotenv": "^8.0.0",
     "npm": "^6.9.0",
+    "postcss-cli": "^6.1.3",
     "react": "^16.8.6",
     "react-amplitude": "^0.1.7",
     "react-dom": "^16.8.6",
@@ -16,7 +18,8 @@
     "typescript": "^3.5.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "build:style":"tailwind build src/styles/index.css -o src/styles/tailwind.css",
+    "start": "npm run build:style && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -35,5 +38,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "tailwindcss": "^1.1.3"
   }
 }
