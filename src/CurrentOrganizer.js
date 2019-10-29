@@ -15,7 +15,7 @@ export default class CurrentOrganizer extends Component{
 
     componentDidMount() {
 
-        this.currentOrganizer()
+      // this.currentOrganizer()
     }
 
     handlError = (err) => {
@@ -53,22 +53,11 @@ export default class CurrentOrganizer extends Component{
 
     render() {
         return(
-            <div>
-            {this.state.currentOrganizer.map((item, i) => {
-                const nextDinnerDate = this.extractDate(item.date_of_next_dinner)
-                const timestampSelectedDate = this.extractDate(item.timestamp_selected)
-                return (
-                  <div>
-                    <ul>
-                      <li>{item.name}  -  Den: {nextDinnerDate},  Utsedd att organisera: {timestampSelectedDate}</li>
-                    </ul>
-                  </div>)
-              })}
-              {this.state.currentOrganizer.map((item) => {
-                  return (
-                      <CountDownClock nextEvent={item.date_of_next_dinner}/>
-                  )
-              })}
+            <div className="py-2 text-center">
+
+              <h1>
+                Pelle Jansson
+                </h1>
 
               </div>
           )}}

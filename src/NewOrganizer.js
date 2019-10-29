@@ -74,7 +74,7 @@ export default class NewOrganizer extends Component {
     }
 
     render() {
-        return <div>
+        return <div className="py-2 text-center">
                 <h2>Val av ny organisatör </h2>
                 <h3>potentiella organisatörer</h3>
                 <form onSubmit={this.addParticipant}>

@@ -74,25 +74,29 @@ export default class Site extends Component  {
             successfulDatabaseUpdate = <h4></h4>
         }
         return (
-          <div>
-            <div className=" bg-white shadow-md rounded px-8 py-8 pt-8">
-                <h1 style={{color:"black"}}>nästatorsdagsmiddag.com</h1>
+          <div className="bg-top pb-64" style={{
+              backgroundImage: `url(${require('./background.jpg')})`,
+                }}>
+            <div className=" bg-transparent py-8">
+                <h1 className="text-center" >Nästa torsdagsmiddag</h1>
             </div>
-            <h2>Den som ordnar kommande middag är:</h2>
+            <h2 className="py-2 text-center" style={{
+              color:"white",
+              fontSize:"1em",
+              fontWeight:"400"
+            }}>Den som ordnar kommande middag är:</h2>
             <CurrentOrganizer config={config} password={this.state.password}/>
-            <hr style={{
-                color: "grey",
-                backgroundColor: "grey",
-                height: 5
-            }}/>
+
             <NewOrganizer config={config} onHandleNewOrganizer={this.handleNewOrganizer}/>
-            <form>
+            <form className="py-2 text-center">
                 <h3>Datum för nästa middag</h3>
                 <input placeholder="yyyy-mm-dd" value={this.state.nextEventDate} onChange={(event) => this.onChange(event, "nextEventDate")}/>
             </form>
-            <input placeholder="Password to interact with database" value={this.state.password} onChange={(event) => this.onChange(event, "password")}/>
-            <button type="submit" onClick={this.confirmNewOrganizer}> Confirm new organizer</button>
-            {successfulDatabaseUpdate}
+              <input className="py-2 text-center" placeholder="Password to interact with database" value={this.state.password} onChange={(event) => this.onChange(event, "password")}/>
+              <button type="submit" onClick={this.confirmNewOrganizer}> Confirm new organizer</button>
+              {successfulDatabaseUpdate}
+            <div className="py-64">
+            </div>
           </div>
     )
     }
