@@ -5,6 +5,8 @@ import amplitude from 'amplitude-js/amplitude';
 import {ValidDateFormat, ValidDate} from './DateValidator'
 import CurrentOrganizer from './CurrentOrganizer'
 import NewOrganizer from './NewOrganizer'
+import NavBar from './NavBar'
+import DateEvent from './DateEvent'
 
 const config = {
     API_DB: process.env.REACT_APP_API_DB,
@@ -74,30 +76,12 @@ export default class Site extends Component  {
             successfulDatabaseUpdate = <h4></h4>
         }
         return (
-          <div className="bg-top pb-64" style={{
-              backgroundImage: `url(${require('./background.jpg')})`,
-                }}>
-            <div className=" bg-transparent py-8">
-                <h1 className="text-center" >Nästa torsdagsmiddag</h1>
-            </div>
-            <h2 className="py-2 text-center" style={{
-              color:"white",
-              fontSize:"1em",
-              fontWeight:"400"
-            }}>Den som ordnar kommande middag är:</h2>
-            <CurrentOrganizer config={config} password={this.state.password}/>
+        <div>
+            <NavBar/>
+            <DateEvent/>
+        </div>
 
-            <NewOrganizer config={config} onHandleNewOrganizer={this.handleNewOrganizer}/>
-            <form className="py-2 text-center">
-                <h3>Datum för nästa middag</h3>
-                <input placeholder="yyyy-mm-dd" value={this.state.nextEventDate} onChange={(event) => this.onChange(event, "nextEventDate")}/>
-            </form>
-              <input className="py-2 text-center" placeholder="Password to interact with database" value={this.state.password} onChange={(event) => this.onChange(event, "password")}/>
-              <button type="submit" onClick={this.confirmNewOrganizer}> Confirm new organizer</button>
-              {successfulDatabaseUpdate}
-            <div className="py-64">
-            </div>
-          </div>
+          
     )
     }
 }
