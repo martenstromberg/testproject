@@ -7,6 +7,7 @@ import CurrentOrganizer from './CurrentOrganizer'
 import NewOrganizer from './NewOrganizer'
 import NavBar from './NavBar'
 import DateEvent from './DateEvent'
+import OsaSection from './OsaSection'
 
 const config = {
     API_DB: process.env.REACT_APP_API_DB,
@@ -79,9 +80,10 @@ export default class Site extends Component  {
         <div>
             <NavBar/>
             <DateEvent/>
+            <OsaSection/>
         </div>
 
-          
+
     )
     }
 }
