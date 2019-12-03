@@ -1,6 +1,7 @@
 import React from 'react'
 import {useAuth0} from './react-auth0-wrapper'
 import Site from './Site'
+import {withFirebase} from './components/Firebase'
 
 
 const App = () => {
@@ -31,4 +32,4 @@ const App = () => {
   // );
 };
 
-export default App;
+export default withFirebase(App);

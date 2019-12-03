@@ -8,6 +8,7 @@ import NewOrganizer from './NewOrganizer'
 import NavBar from './NavBar'
 import DateEvent from './DateEvent'
 import OsaSection from './OsaSection'
+import Firebase, { withFirebase } from './components/Firebase'
 
 const config = {
     API_DB: process.env.REACT_APP_API_DB,
@@ -15,7 +16,7 @@ const config = {
     ENVIRONMENT: process.env.REACT_APP_ENVIRONMENT
   }
 
-export default class Site extends Component  {
+class Site extends Component  {
     constructor(props) {
         super(props)
 
@@ -69,7 +70,18 @@ export default class Site extends Component  {
         console.log(this.state.nextEventDate)
     }
 
+    test = () => {
+
+        console.log(this.props.firebase.doWriteData("hello2"))
+    }
+
     render() {
+
+       
+            
+        this.test()
+
+
         let successfulDatabaseUpdate
         if(this.state.responseCode === 403) {
             successfulDatabaseUpdate = <h4> Misslyckades med att uppdatera organisatör. Använde du korrekt lösenord</h4>
@@ -87,3 +99,5 @@ export default class Site extends Component  {
     )
     }
 }
+
+export default withFirebase(Site)
