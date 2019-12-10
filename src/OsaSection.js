@@ -6,7 +6,8 @@ class OsaSection extends Component {
     super(props)
 
     this.state = {
-      signUp: false
+      signUp: false,
+      userName: ""
     }
 
 }
@@ -43,6 +44,12 @@ class OsaSection extends Component {
       }
       }
 
+  updateUserName = (event) => {
+    const newUserName = event.target.value
+    console.log(newUserName)
+    this.setState({userName: newUserName})
+  }
+
   render() {
 
     const signUp = this.state.signUp
@@ -51,6 +58,10 @@ class OsaSection extends Component {
 
     return (
      <div class="flex content-center flex-wrap bg-gray-200 h-48">
+      <form class="w-full p-2 text-center">
+        <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" onChange={this.updateUserName} type="text" placeholder="Username">
+        </input>
+     </form>
         <div class="w-full p-2 text-center">
           <button class="object-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={this.updateState}> {attendanceStatus} </button>
         </div>
