@@ -11,9 +11,18 @@ class OsaSection extends Component {
 
 }
 
+  getNewState = () => {
+      if (this.state.signUp == false) {
+        return true
+      } else {
+        return false
+        }
+      }
+
   updateState = () => {
     console.log("setting state")
-    this.setState({signUp: true})
+    const newState = this.getNewState()
+    this.setState({signUp: newState})
   }
 
   attending = () => {
