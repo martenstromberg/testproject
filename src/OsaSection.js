@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import Firebase, { withFirebase } from './components/Firebase'
+
 
 class OsaSection extends Component {
 
@@ -24,6 +26,7 @@ class OsaSection extends Component {
     console.log("setting state")
     const newState = this.getNewState()
     this.setState({signUp: newState})
+    this.writeToDB()
   }
 
   attending = () => {
@@ -50,8 +53,16 @@ class OsaSection extends Component {
     this.setState({userName: newUserName})
   }
 
-  render() {
+  writeToDB = () => {
+      this.props.firebase.doWriteData(this.state.userName)
+  }
 
+  readFromDB = () => {
+      this.props.firebase.doReadData()
+  }
+
+  render() {
+    this.readFromDB()
     const signUp = this.state.signUp
     let attendanceStatus = this.attending()
     let attendanceMessage = this.message()
@@ -74,4 +85,4 @@ class OsaSection extends Component {
   }
 }
 
-export default OsaSection;
+export default withFirebase(OsaSection);

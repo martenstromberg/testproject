@@ -34,6 +34,19 @@ const firebaseConfig = {
             console.error("Error writing document: ", error);
         })
     )
+    doReadData = () => (
+        this.db.collection("dinner").get().then((querySnapshot) => {
+
+            querySnapshot.forEach((doc) => {
+                if (doc.id === "dinner1") {
+                  doc.data().attendants.forEach( (name) => {
+                    console.log(name);
+                  })
+                }
+                })
+              })
+  )
+
   }
 
   export default Firebase

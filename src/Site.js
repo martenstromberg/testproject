@@ -8,6 +8,7 @@ import NewOrganizer from './NewOrganizer'
 import NavBar from './NavBar'
 import DateEvent from './DateEvent'
 import OsaSection from './OsaSection'
+import Attendants from './Attendants'
 import Firebase, { withFirebase } from './components/Firebase'
 
 const config = {
@@ -70,16 +71,7 @@ class Site extends Component  {
         console.log(this.state.nextEventDate)
     }
 
-    test = () => {
-
-        console.log(this.props.firebase.doWriteData("hello2"))
-    }
-
     render() {
-
-       
-            
-        this.test()
 
 
         let successfulDatabaseUpdate
@@ -93,6 +85,7 @@ class Site extends Component  {
             <NavBar/>
             <DateEvent/>
             <OsaSection/>
+            <Attendants/>
         </div>
 
 
