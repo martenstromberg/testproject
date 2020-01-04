@@ -24,9 +24,14 @@ const firebaseConfig = {
         this.db = app.firestore()
     }
 
+    
+
     doWriteData = (description) => (
-        this.db.collection('dinner').add({
-            description: description,
+
+
+
+        this.db.collection('dinner').doc('dinner1').update({
+            attendants: "firebase.functions.FieldValue.arrayUnion(description)"
         }).then(function() {
             console.log("Document successfully written!");
         })
