@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Firebase, { withFirebase } from './components/Firebase'
 
 
+
 class OsaSection extends Component {
 
   constructor(props) {
@@ -54,6 +55,7 @@ class OsaSection extends Component {
   }
 
   writeToDB = () => {
+    console.log(this.state.userName)
       this.props.firebase.doWriteData(this.state.userName)
   }
 
